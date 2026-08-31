@@ -175,15 +175,31 @@
 </div>
 
 <script>
-// ===== LẤY KEY TỪ ADMIN =====
+// ============================================================
+// AIMLOCK PRO - FIX LỖI KEY
+// ============================================================
+
+// ===== LẤY KEY TỪ ADMIN + FALLBACK =====
 function getKeysFromAdmin() {
     try {
         const saved = localStorage.getItem('tipa_keys');
         if (saved) {
-            return JSON.parse(saved);
+            const keys = JSON.parse(saved);
+            if (keys && keys.length > 0) {
+                return keys;
+            }
         }
     } catch(e) {}
-    return [];
+    
+    // FALLBACK: NẾU KHÔNG CÓ KEY, TẠO KEY MẶC ĐỊNH
+    const defaultKeys = [
+        { key: 'ANHDINH-20260830-TB1-00MMLB', expire: '2099-12-31 23:59:59', tb: 1, user: 'Pedinhios' },
+        { key: 'ANHDINH-20260831-TB1-XXXXXX', expire: '2099-12-31 23:59:59', tb: 1, user: 'Pedinhios' },
+        { key: 'ANHDINH-20260901-TB2-ABCDEF', expire: '2099-12-31 23:59:59', tb: 2, user: 'Pedinhios' }
+    ];
+    // Lưu fallback vào localStorage để dùng sau
+    localStorage.setItem('tipa_keys', JSON.stringify(defaultKeys));
+    return defaultKeys;
 }
 
 // ===== DOM =====
@@ -248,6 +264,8 @@ const moduleCount = $('moduleCount');
 // ===== HÀM KEY =====
 function validateKey(inputKey) {
     const keys = getKeysFromAdmin();
+    console.log('📋 Danh sách key hiện có:', keys);
+    
     const found = keys.find(item => item.key === inputKey);
     
     if (!found) {
@@ -330,14 +348,20 @@ function checkLogin() {
             }
             localStorage.removeItem('aimlock_key');
         }
-    } catch(e) {}
+    } catch(e) {
+        console.log('Error checkLogin:', e);
+    }
 }
 
 function handleLogin() {
     const key = keyInput.value.trim();
     if (!key) { loginError.textContent = '⚠️ Vui lòng nhập key!'; return; }
     
+    console.log('🔑 Kiểm tra key:', key);
+    
     const result = validateKey(key);
+    console.log('📋 Kết quả:', result);
+    
     if (result.valid) {
         state.key = result.key;
         state.keyExpire = result.expire;
