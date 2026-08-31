@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>AIMLOCK PRO · GOET</title>
     <style>
-        /* ===== RESET ===== */
         *{margin:0;padding:0;box-sizing:border-box}
         body{min-height:100vh;background:#050a12;display:flex;justify-content:center;align-items:center;font-family:-apple-system,'Segoe UI',sans-serif;padding:10px}
+        
+        /* ===== ANIMATION ===== */
+        @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes pulse{0%,100%{opacity:0.7}50%{opacity:1}}
+        @keyframes borderPulse{0%,100%{border-color:rgba(61,212,181,0.15);box-shadow:0 0 40px rgba(61,212,181,0.05)}50%{border-color:rgba(61,212,181,0.35);box-shadow:0 0 60px rgba(61,212,181,0.1)}}
+        @keyframes glowRotate{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+        @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
         
         /* ===== LOGIN ===== */
         .login-screen{width:100%;max-width:400px;display:flex;justify-content:center;align-items:center;min-height:100vh}
         .login-box{width:100%;background:#0c1624;border-radius:48px;padding:40px 24px 32px;border:2px solid rgba(61,212,181,0.15);box-shadow:0 0 40px rgba(61,212,181,0.05),inset 0 0 40px rgba(61,212,181,0.02),0 20px 80px rgba(0,0,0,0.8);position:relative;overflow:hidden;animation:slideUp 0.6s cubic-bezier(0.34,1.56,0.64,1),borderPulse 3s ease-in-out infinite}
         .login-box::before{content:'';position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;border-radius:50px;background:linear-gradient(135deg,rgba(61,212,181,0.1),transparent 40%,transparent 60%,rgba(61,212,181,0.1));z-index:-1;animation:glowRotate 4s linear infinite;filter:blur(20px)}
-        @keyframes glowRotate{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-        @keyframes borderPulse{0%,100%{border-color:rgba(61,212,181,0.15);box-shadow:0 0 40px rgba(61,212,181,0.05),inset 0 0 40px rgba(61,212,181,0.02)}50%{border-color:rgba(61,212,181,0.35);box-shadow:0 0 60px rgba(61,212,181,0.1),inset 0 0 60px rgba(61,212,181,0.05)}}
-        @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        
-        /* ===== HEADER LOGIN ===== */
         .login-box .logo{font-size:52px;display:block;text-align:center;animation:float 3s ease-in-out infinite}
-        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
         .login-box .title{font-size:28px;font-weight:800;color:#e8f0f5;text-align:center}
         .login-box .title span{color:#3dd4b5;text-shadow:0 0 30px rgba(61,212,181,0.15)}
         .login-box .sub{color:#3a5a5a;font-size:12px;text-align:center;margin:4px 0 20px}
@@ -34,13 +35,18 @@
         
         /* ===== MAIN APP ===== */
         .app{width:100%;max-width:400px;background:#0c1624;border-radius:48px;padding:24px 20px;border:2px solid rgba(61,212,181,0.08);box-shadow:0 0 30px rgba(61,212,181,0.05),inset 0 0 30px rgba(61,212,181,0.02),0 20px 80px rgba(0,0,0,0.8);animation:slideUp 0.6s cubic-bezier(0.34,1.56,0.64,1)}
-        .header{text-align:center;padding-bottom:4px}
+        .header{text-align:center;padding:6px 0 4px;position:relative}
         .header .logo{font-size:52px;display:block;animation:float 3s ease-in-out infinite}
         .header .title{font-size:28px;font-weight:800;color:#e8f0f5}
         .header .title span{color:#3dd4b5;text-shadow:0 0 30px rgba(61,212,181,0.15)}
         .header .sub{color:#3a5a5a;font-size:11px}
         .badge{display:inline-block;background:rgba(61,212,181,0.08);padding:4px 18px;border-radius:40px;font-size:9px;color:#3dd4b5;border:1px solid rgba(61,212,181,0.08);animation:pulse 2s infinite;margin-top:4px}
-        @keyframes pulse{0%,100%{opacity:0.7}50%{opacity:1}}
+        
+        /* ===== NÚT ĐĂNG XUẤT ===== */
+        .logout-btn{position:absolute;top:8px;right:4px;background:rgba(212,90,90,0.08);border:1px solid rgba(212,90,90,0.12);color:#d45a5a;padding:4px 12px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;transition:all 0.3s ease}
+        .logout-btn:active{transform:scale(0.95)}
+        .logout-btn:hover{background:rgba(212,90,90,0.15)}
+        
         .status-box{background:rgba(10,20,30,0.6);border-radius:20px;padding:12px 16px;margin:12px 0;border:1px solid rgba(255,255,255,0.02)}
         .status-row{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;color:#3a5a5a}
         .status-row .val{color:#3dd4b5;font-weight:500}
@@ -58,8 +64,6 @@
         .game-btn:active{transform:scale(0.95)}
         .game-btn.active{background:rgba(26,42,58,0.8);border-color:rgba(61,212,181,0.15);color:#b8c8d4;box-shadow:0 4px 20px rgba(61,212,181,0.04)}
         .game-btn .icon{font-size:18px;display:block;margin-bottom:2px}
-        
-        /* ===== FUNC LIST ===== */
         .func-item{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:rgba(10,20,30,0.5);border-radius:24px;margin:4px 0;border:1px solid rgba(255,255,255,0.02);cursor:pointer;transition:all 0.3s;animation:slideUp 0.6s ease-out;animation-fill-mode:backwards}
         .func-item:nth-child(1){animation-delay:0.05s}
         .func-item:nth-child(2){animation-delay:0.10s}
@@ -79,8 +83,6 @@
         .func-item .hint{font-size:10px;color:#3a5a5a;min-width:30px;text-align:right}
         .func-item.active .hint{color:#5a8a8a}
         .func-right{display:flex;align-items:center;gap:8px}
-        
-        /* ===== BUTTONS ===== */
         .btn-main{width:100%;padding:16px;border:none;border-radius:32px;background:linear-gradient(135deg,#3dd4b5,#2a9a8a);color:#0a121a;font-size:16px;font-weight:700;cursor:pointer;text-align:center;margin:12px 0;transition:all 0.3s}
         .btn-main:active{transform:scale(0.95)}
         .btn-main.injected{background:linear-gradient(135deg,#d4b83a,#b8942a)}
@@ -88,16 +90,11 @@
         .open-btn:active{transform:scale(0.95)}
         .log-btn{width:100%;padding:10px;border:none;border-radius:20px;background:rgba(10,20,30,0.4);color:#3a5a5a;font-size:11px;margin-top:6px;cursor:pointer;transition:all 0.3s}
         .log-btn:active{transform:scale(0.95)}
-        
-        /* ===== TOAST ===== */
         .toast{padding:12px 16px;border-radius:24px;background:rgba(61,212,181,0.04);border:1px solid rgba(61,212,181,0.06);font-size:12px;color:#7ab8a8;text-align:center;margin:10px 0;transition:all 0.3s}
         .footer{text-align:center;font-size:10px;color:#1a2a2a;margin-top:8px}
         .footer span{color:#2a4a4a}
         .version{text-align:center;font-size:7px;color:#1a2a2a;margin-top:4px;letter-spacing:1px}
-        
-        /* ===== RESPONSIVE ===== */
-        @media(max-width:420px){.app,.login-box{padding:16px 14px;border-radius:32px}.title{font-size:24px}.logo{font-size:44px}.func-item{padding:8px 12px}.func-item .left{font-size:12px}.btn-main{font-size:14px;padding:14px}.game-btn{font-size:11px;padding:10px 0}.toggle{width:38px;height:20px}.toggle .knob{width:14px;height:14px}.toggle.active .knob{left:20px}.key-input{font-size:12px;padding:12px}}
-        @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+        @media(max-width:420px){.app,.login-box{padding:16px 14px;border-radius:32px}.title{font-size:24px}.logo{font-size:44px}.func-item{padding:8px 12px}.func-item .left{font-size:12px}.btn-main{font-size:14px;padding:14px}.game-btn{font-size:11px;padding:10px 0}.toggle{width:38px;height:20px}.toggle .knob{width:14px;height:14px}.toggle.active .knob{left:20px}.key-input{font-size:12px;padding:12px}.logout-btn{top:6px;right:2px;font-size:9px;padding:2px 10px}}
     </style>
 </head>
 <body>
@@ -123,6 +120,8 @@
         <div class="title">AIM<span>LOCK</span></div>
         <div class="sub">Bản quyền Pedinhios · 0862937139</div>
         <span class="badge" id="statusBadge">● ONLINE</span>
+        <!-- NÚT ĐĂNG XUẤT -->
+        <button class="logout-btn" id="btnLogout">🚪 Đăng xuất</button>
     </div>
 
     <div class="status-box">
@@ -188,12 +187,14 @@
 
 <script>
 // ============================================================
-// AIMLOCK PRO - APP HOÀN CHỈNH
+// AIMLOCK PRO - APP HOÀN CHỈNH (CÓ ĐĂNG XUẤT)
 // ============================================================
 
-// ===== DANH SÁCH KEY (TRỐNG - TỰ NHẬP) =====
+// ===== KEY DATA =====
 const KEY_DATA = [
-    // MÀY TỰ NHẬP KEY KHI DÙNG
+    { key: 'ANHDINH-20260830-TB1-00MMLB', expire: '2099-12-31 23:59:59', tb: 1 },
+    { key: 'ANHDINH-20260831-TB1-XXXXXX', expire: '2099-12-31 23:59:59', tb: 1 },
+    { key: 'ANHDINH-20260901-TB2-ABCDEF', expire: '2099-12-31 23:59:59', tb: 2 }
 ];
 
 // ===== DOM =====
@@ -207,6 +208,7 @@ const daysLeftEl = document.getElementById('daysLeft');
 const timeDetailEl = document.getElementById('timeDetail');
 const expireDisplay = document.getElementById('expireDisplay');
 const tbDisplay = document.getElementById('tbDisplay');
+const btnLogout = document.getElementById('btnLogout');
 
 // ===== STATE =====
 const state = {
@@ -256,17 +258,21 @@ const moduleCount = $('moduleCount');
 
 // ===== HÀM KEY =====
 function validateKey(inputKey) {
-    // KEY_DATA trống → nhập gì cũng vào!
-    if (inputKey && inputKey.length > 0) {
-        // Tạo key tạm thời
-        return {
-            valid: true,
-            expire: '2099-12-31 23:59:59',
-            tb: 1,
-            key: inputKey
-        };
+    const found = KEY_DATA.find(item => item.key === inputKey);
+    if (!found) {
+        return { valid: false, reason: '❌ Key không tồn tại!' };
     }
-    return { valid: false, reason: '⚠️ Vui lòng nhập key!' };
+    const now = new Date();
+    const expireDate = new Date(found.expire);
+    if (expireDate < now) {
+        return { valid: false, reason: '❌ Key đã hết hạn!' };
+    }
+    return {
+        valid: true,
+        expire: found.expire,
+        tb: found.tb || 1,
+        key: found.key
+    };
 }
 
 function formatDateTime(dateStr) {
@@ -356,6 +362,22 @@ function handleLogin() {
         loginError.textContent = result.reason;
         keyInput.style.animation = 'shake 0.5s ease';
         setTimeout(() => { keyInput.style.animation = ''; }, 500);
+    }
+}
+
+// ===== ĐĂNG XUẤT =====
+function handleLogout() {
+    if (confirm('🚪 Bạn có chắc muốn đăng xuất?')) {
+        localStorage.removeItem('aimlock_key');
+        state.key = '';
+        state.keyExpire = null;
+        state.isInjected = false;
+        mainApp.style.display = 'none';
+        loginScreen.style.display = 'flex';
+        keyInput.value = '';
+        loginError.textContent = '';
+        showToast('🚪 Đã đăng xuất');
+        playBeep();
     }
 }
 
@@ -491,6 +513,7 @@ function startExpireCounter() {
 // ===== EVENTS =====
 btnLogin.addEventListener('click', handleLogin);
 keyInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleLogin(); });
+btnLogout.addEventListener('click', handleLogout);
 
 btnFF.addEventListener('click', () => selectGame('freefire'));
 btnFFMax.addEventListener('click', () => selectGame('freefiremax'));
