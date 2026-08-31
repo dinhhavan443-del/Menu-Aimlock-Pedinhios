@@ -109,7 +109,7 @@
         <button class="btn-login" id="btnLogin">▶ XÁC THỰC</button>
         <div id="loginError" class="login-error"></div>
         <div class="footer-text">📱 Zalo: 0862937139 · Pedinhios</div>
-        <div class="version">⚡ TIPA v4.0 · GOET</div>
+        <div class="version">⚡AIMLOCK v4.0 · GOET</div>
     </div>
 </div>
 
@@ -120,7 +120,6 @@
         <div class="title">AIM<span>LOCK</span></div>
         <div class="sub">Bản quyền Pedinhios · 0862937139</div>
         <span class="badge" id="statusBadge">● ONLINE</span>
-        <!-- NÚT ĐĂNG XUẤT -->
         <button class="logout-btn" id="btnLogout">🚪 Đăng xuất</button>
     </div>
 
@@ -187,15 +186,19 @@
 
 <script>
 // ============================================================
-// AIMLOCK PRO - APP HOÀN CHỈNH (CÓ ĐĂNG XUẤT)
+// AIMLOCK PRO - LẤY KEY TỪ ADMIN
 // ============================================================
 
-// ===== KEY DATA =====
-const KEY_DATA = [
-    { key: 'ANHDINH-20260830-TB1-00MMLB', expire: '2099-12-31 23:59:59', tb: 1 },
-    { key: 'ANHDINH-20260831-TB1-XXXXXX', expire: '2099-12-31 23:59:59', tb: 1 },
-    { key: 'ANHDINH-20260901-TB2-ABCDEF', expire: '2099-12-31 23:59:59', tb: 2 }
-];
+// ===== LẤY KEY TỪ ADMIN =====
+function getKeysFromAdmin() {
+    try {
+        const saved = localStorage.getItem('tipa_keys');
+        if (saved) {
+            return JSON.parse(saved);
+        }
+    } catch(e) {}
+    return [];
+}
 
 // ===== DOM =====
 const loginScreen = document.getElementById('loginScreen');
@@ -258,20 +261,25 @@ const moduleCount = $('moduleCount');
 
 // ===== HÀM KEY =====
 function validateKey(inputKey) {
-    const found = KEY_DATA.find(item => item.key === inputKey);
+    const keys = getKeysFromAdmin();
+    const found = keys.find(item => item.key === inputKey);
+    
     if (!found) {
-        return { valid: false, reason: '❌ Key không tồn tại!' };
+        return { valid: false, reason: '❌ Key không tồn tại trong hệ thống!' };
     }
+    
     const now = new Date();
     const expireDate = new Date(found.expire);
     if (expireDate < now) {
-        return { valid: false, reason: '❌ Key đã hết hạn!' };
+        return { valid: false, reason: '❌ Key đã hết hạn! (Hết hạn: ' + formatDateTime(found.expire) + ')' };
     }
+    
     return {
         valid: true,
         expire: found.expire,
         tb: found.tb || 1,
-        key: found.key
+        key: found.key,
+        user: found.user || 'Pedinhios'
     };
 }
 
@@ -327,11 +335,11 @@ function checkLogin() {
                 state.keyTB = result.tb;
                 loginScreen.style.display = 'none';
                 mainApp.style.display = 'block';
-                keyDisplay.textContent = '✅ ' + savedKey.substring(0, 15) + '...';
+                keyDisplay.textContent = '✅ ' + savedKey.substring(0, 15) + '...' + ' (' + (result.user || '') + ')';
                 updateTimeDisplay(result.expire);
                 updateTbDisplay(result.tb);
                 updateUI();
-                showToast('✅ Đã đăng nhập');
+                showToast('✅ Đã đăng nhập: ' + savedKey);
                 return;
             }
             localStorage.removeItem('aimlock_key');
@@ -351,7 +359,7 @@ function handleLogin() {
         localStorage.setItem('aimlock_key', key);
         loginScreen.style.display = 'none';
         mainApp.style.display = 'block';
-        keyDisplay.textContent = '✅ ' + key.substring(0, 15) + '...';
+        keyDisplay.textContent = '✅ ' + key.substring(0, 15) + '...' + ' (' + (result.user || '') + ')';
         loginError.textContent = '';
         updateTimeDisplay(result.expire);
         updateTbDisplay(result.tb);
