@@ -1,7 +1,4 @@
-/* ============================================================
-   AIMLOCK PRO - STYLE (CSS ĐẸP + ANIMATION)
-   ============================================================ */
-
+/* ===== RESET & BASE ===== */
 * {
     margin: 0;
     padding: 0;
@@ -10,11 +7,11 @@
 
 body {
     min-height: 100vh;
-    background: radial-gradient(ellipse at center, #0f1a2e, #050a12);
+    background: #050a12;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
     padding: 10px;
 }
 
@@ -22,16 +19,16 @@ body {
 .app {
     width: 100%;
     max-width: 400px;
-    background: rgba(12, 22, 36, 0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: #0c1624;
     border-radius: 48px;
     padding: 24px 20px;
-    border: 1px solid rgba(61, 212, 181, 0.08);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    animation: slideUp 0.6s ease-out;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8);
+    animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.3s ease;
 }
 
+/* Animation xuất hiện */
 @keyframes slideUp {
     from {
         opacity: 0;
@@ -56,7 +53,8 @@ body {
 }
 
 @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
         transform: translateY(0);
     }
     50% {
@@ -97,7 +95,8 @@ body {
 }
 
 @keyframes pulse {
-    0%, 100% {
+    0%,
+    100% {
         opacity: 0.7;
     }
     50% {
@@ -105,13 +104,14 @@ body {
     }
 }
 
-/* ===== STATUS ===== */
+/* ===== STATUS BOX ===== */
 .status-box {
     background: rgba(10, 20, 30, 0.6);
     border-radius: 20px;
     padding: 12px 16px;
     margin: 12px 0;
     border: 1px solid rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(5px);
 }
 
 .status-row {
@@ -131,7 +131,7 @@ body {
     color: #d4b83a;
 }
 
-/* ===== KEY ===== */
+/* ===== KEY STATUS ===== */
 .key-status {
     display: flex;
     justify-content: space-between;
@@ -164,7 +164,7 @@ body {
     font-weight: 600;
 }
 
-/* ===== TB ===== */
+/* ===== TB INFO ===== */
 .tb-info {
     display: flex;
     justify-content: space-between;
@@ -236,6 +236,7 @@ body {
     animation-fill-mode: backwards;
 }
 
+/* Delay cho từng item */
 .func-item:nth-child(1) {
     animation-delay: 0.05s;
 }
@@ -363,25 +364,7 @@ body {
     box-shadow: 0 4px 30px rgba(212, 184, 58, 0.1);
 }
 
-.btn-main::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 60%);
-    opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.5s;
-}
-
-.btn-main:active::after {
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* ===== EXTRA BUTTONS ===== */
+/* ===== BUTTON EXTRA ===== */
 .open-btn {
     width: 100%;
     padding: 10px;
@@ -447,7 +430,6 @@ body {
 ::-webkit-scrollbar {
     width: 2px;
 }
-
 ::-webkit-scrollbar-thumb {
     background: rgba(61, 212, 181, 0.2);
     border-radius: 10px;
