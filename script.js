@@ -2,17 +2,26 @@
 // AIMLOCK PRO - SCRIPT HOÀN CHỈNH
 // ============================================================
 
+// ===== DOM REFS =====
+const loginScreen = document.getElementById('loginScreen');
+const mainApp = document.getElementById('mainApp');
+const keyInput = document.getElementById('keyInput');
+const btnLogin = document.getElementById('btnLogin');
+const loginError = document.getElementById('loginError');
+const keyDisplay = document.getElementById('keyDisplay');
+
 // ===== STATE =====
 const state = {
     currentGame: 'freefire',
     isInjected: false,
+    key: '',
     funcs: {
         aimlock: true,
         keoTam: true,
         fixLo: true,
         giamRung: false,
         fixGiat: false,
-        dpi: false
+        toiUu: false // Thay DPI bằng Tối Ưu
     }
 };
 
@@ -32,10 +41,9 @@ const funcMap = {
     fixLo: { label: 'Fix Lỗ', hint: 'Stable' },
     giamRung: { label: 'Giảm Rung', hint: 'On' },
     fixGiat: { label: 'Fix Giật', hint: 'On' },
-    dpi: { label: 'DPI 2000', hint: '2000' }
+    toiUu: { label: 'Tối Ưu', hint: 'On' } // Thêm Tối Ưu
 };
 
-// ===== DOM REFS =====
 const $ = id => document.getElementById(id);
 const btnMain = $('btnMain');
 const btnFF = $('btnFF');
@@ -47,7 +55,43 @@ const injStatus = $('injStatus');
 const moduleCount = $('moduleCount');
 const daysLeft = $('daysLeft');
 
-// ===== TẠO ÂM THANH BÍP =====
+// ===== LOGIN =====
+function checkLogin() {
+    try {
+        const savedKey = localStorage.getItem('aimlock_key');
+        if (savedKey) {
+            state.key = savedKey;
+            loginScreen.style.display = 'none';
+            mainApp.style.display = 'block';
+            keyDisplay.textContent = '✅ ' + savedKey.substring(0, 15) + '...';
+            updateUI();
+            showToast('✅ Đã đăng nhập: ' + savedKey);
+        }
+    } catch(e) {}
+}
+
+function handleLogin() {
+    const key = keyInput.value.trim();
+    if (!key) {
+        loginError.textContent = '⚠️ Vui lòng nhập key!';
+        return;
+    }
+    if (key.startsWith('ANHDINH-') && key.length > 10) {
+        state.key = key;
+        localStorage.setItem('aimlock_key', key);
+        loginScreen.style.display = 'none';
+        mainApp.style.display = 'block';
+        keyDisplay.textContent = '✅ ' + key.substring(0, 15) + '...';
+        loginError.textContent = '';
+        updateUI();
+        showToast('✅ Đăng nhập thành công!');
+        playBeep();
+    } else {
+        loginError.textContent = '❌ Key không hợp lệ! Định dạng: ANHDINH-YYYYMMDD-TB1-XXXXXX';
+    }
+}
+
+// ===== ÂM THANH =====
 function playBeep() {
     try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -61,22 +105,15 @@ function playBeep() {
         gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
         oscillator.start(audioCtx.currentTime);
         oscillator.stop(audioCtx.currentTime + 0.1);
-    } catch(e) {
-        console.log('Audio not supported');
-    }
+    } catch(e) {}
 }
 
 // ===== TOAST =====
-function showToast(msg, type = 'success') {
+function showToast(msg) {
     toast.textContent = msg;
-    toast.style.background = type === 'success' ? 'rgba(61,212,181,0.06)' : 'rgba(212,184,58,0.06)';
-    toast.style.borderColor = type === 'success' ? 'rgba(61,212,181,0.08)' : 'rgba(212,184,58,0.08)';
     clearTimeout(toast._timer);
     toast._timer = setTimeout(() => {
-        const game = state.currentGame;
-        toast.textContent = '✅ Sẵn sàng · ' + GAME_NAMES[game];
-        toast.style.background = 'rgba(61,212,181,0.04)';
-        toast.style.borderColor = 'rgba(61,212,181,0.06)';
+        toast.textContent = '✅ Sẵn sàng · ' + GAME_NAMES[state.currentGame];
     }, 3000);
 }
 
@@ -99,10 +136,7 @@ function toggleFunc(key) {
     const hint = item.querySelector('.hint');
     if (hint) hint.textContent = isOn ? funcMap[key].hint : 'Off';
     updateUI();
-    
-    // Phát tiếng bíp
     playBeep();
-    
     showToast((isOn ? '✅ BẬT' : '⏹ TẮT') + ' ' + funcMap[key].label);
 }
 
@@ -120,11 +154,10 @@ function openGame() {
     console.log('Open game: ' + state.currentGame);
     const scheme = GAME_SCHEMES[state.currentGame];
     if (!scheme) {
-        showToast('❌ Không tìm thấy game!', 'error');
+        showToast('❌ Không tìm thấy game!');
         return;
     }
     try {
-        // Dùng a tag để mở URL Scheme
         const link = document.createElement('a');
         link.href = scheme;
         link.style.display = 'none';
@@ -134,7 +167,7 @@ function openGame() {
         showToast('🚀 Đang mở ' + GAME_NAMES[state.currentGame] + '...');
         return true;
     } catch (e) {
-        showToast('❌ Không thể mở game!', 'error');
+        showToast('❌ Không thể mở game!');
         return false;
     }
 }
@@ -146,12 +179,11 @@ function handleInject() {
     console.log('Active functions:', active);
     
     if (active.length === 0) {
-        showToast('⚠️ Chọn ít nhất 1 chức năng!', 'error');
+        showToast('⚠️ Chọn ít nhất 1 chức năng!');
         return;
     }
     
     if (state.isInjected) {
-        // Remove inject
         state.isInjected = false;
         btnMain.textContent = '▶ ÁP DỤNG & INJECT';
         btnMain.className = 'btn-main';
@@ -162,7 +194,6 @@ function handleInject() {
         return;
     }
     
-    // Inject
     state.isInjected = true;
     btnMain.textContent = '⏹ GỠ BỎ & KHÔI PHỤC';
     btnMain.className = 'btn-main injected';
@@ -173,10 +204,8 @@ function handleInject() {
     showToast('✅ Đã inject ' + active.length + ' chức năng vào ' + gameName);
     playBeep();
     
-    // Lưu log
     saveLog(active);
     
-    // Tự động mở game sau 1 giây
     setTimeout(() => {
         openGame();
     }, 1000);
@@ -189,7 +218,8 @@ function saveLog(active) {
         logs.unshift({
             time: new Date().toISOString(),
             game: state.currentGame,
-            funcs: active
+            funcs: active,
+            key: state.key
         });
         if (logs.length > 50) logs = logs.slice(0, 50);
         localStorage.setItem('aimlock_logs', JSON.stringify(logs));
@@ -207,7 +237,7 @@ function viewLog() {
         logs.forEach((log, i) => {
             const time = new Date(log.time).toLocaleString('vi-VN');
             const game = GAME_NAMES[log.game] || log.game;
-            msg += `\n${i+1}. ${time}\n   🎮 ${game}\n   ⚡ ${log.funcs.join(' + ')}\n`;
+            msg += `\n${i+1}. ${time}\n   🎮 ${game}\n   ⚡ ${log.funcs.join(' + ')}\n   🔑 ${log.key || 'N/A'}\n`;
         });
         alert(msg);
     } catch (e) {
@@ -224,24 +254,17 @@ setInterval(() => {
 }, 86400000);
 
 // ===== EVENTS =====
-// Game buttons
+btnLogin.addEventListener('click', handleLogin);
+keyInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleLogin(); });
+
 btnFF.addEventListener('click', () => selectGame('freefire'));
 btnFFMax.addEventListener('click', () => selectGame('freefiremax'));
-
-// Main button
 btnMain.addEventListener('click', handleInject);
-
-// Open game button
 btnOpenGame.addEventListener('click', openGame);
-
-// View log button
 btnViewLog.addEventListener('click', viewLog);
 
-// ===== LOG FUNCTION TO CONSOLE =====
+// ===== INIT =====
+checkLogin();
+updateUI();
 console.log('🎯 AIMLOCK PRO - GOET');
 console.log('📱 Zalo: 0862937139');
-console.log('🔥 Chọn game, bật chức năng, inject!');
-
-// ===== INIT =====
-updateUI();
-showToast('✅ Sẵn sàng · FreeFire');
