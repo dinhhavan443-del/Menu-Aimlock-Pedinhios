@@ -22,13 +22,50 @@ body {
     background: #0c1624;
     border-radius: 48px;
     padding: 24px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8);
-    animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transition: transform 0.3s ease;
+    border: 2px solid rgba(61, 212, 181, 0.1);
+    box-shadow: 
+        0 0 30px rgba(61, 212, 181, 0.05),
+        inset 0 0 30px rgba(61, 212, 181, 0.02),
+        0 20px 80px rgba(0, 0, 0, 0.8);
+    animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+               borderPulse 3s ease-in-out infinite;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
-/* Animation xuất hiện */
+/* ===== KHUNG VIỀN NEON CHÍNH ===== */
+@keyframes borderPulse {
+    0%, 100% {
+        border-color: rgba(61, 212, 181, 0.15);
+        box-shadow: 0 0 30px rgba(61, 212, 181, 0.05), inset 0 0 30px rgba(61, 212, 181, 0.02);
+    }
+    50% {
+        border-color: rgba(61, 212, 181, 0.35);
+        box-shadow: 0 0 50px rgba(61, 212, 181, 0.1), inset 0 0 50px rgba(61, 212, 181, 0.05);
+    }
+}
+
+/* ===== KHUNG VIỀN PHỤ (Glow bên ngoài) ===== */
+.app::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, rgba(61, 212, 181, 0.1), transparent 40%, transparent 60%, rgba(61, 212, 181, 0.1));
+    z-index: -1;
+    animation: glowRotate 4s linear infinite;
+    filter: blur(15px);
+}
+
+@keyframes glowRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== ANIMATION SLIDE UP ===== */
 @keyframes slideUp {
     from {
         opacity: 0;
@@ -53,13 +90,8 @@ body {
 }
 
 @keyframes float {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-8px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
 }
 
 .title {
@@ -95,13 +127,8 @@ body {
 }
 
 @keyframes pulse {
-    0%,
-    100% {
-        opacity: 0.7;
-    }
-    50% {
-        opacity: 1;
-    }
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
 }
 
 /* ===== STATUS BOX ===== */
@@ -126,7 +153,6 @@ body {
     color: #3dd4b5;
     font-weight: 500;
 }
-
 .status-row .val.warn {
     color: #d4b83a;
 }
@@ -147,18 +173,15 @@ body {
     font-size: 10px;
     color: #3a5a5a;
 }
-
 .key-status .value {
     font-size: 11px;
     font-weight: 600;
     color: #3dd4b5;
 }
-
 .key-status .expire {
     font-size: 10px;
     color: #3a5a5a;
 }
-
 .key-status .expire span {
     color: #d4b83a;
     font-weight: 600;
@@ -236,25 +259,12 @@ body {
     animation-fill-mode: backwards;
 }
 
-/* Delay cho từng item */
-.func-item:nth-child(1) {
-    animation-delay: 0.05s;
-}
-.func-item:nth-child(2) {
-    animation-delay: 0.10s;
-}
-.func-item:nth-child(3) {
-    animation-delay: 0.15s;
-}
-.func-item:nth-child(4) {
-    animation-delay: 0.20s;
-}
-.func-item:nth-child(5) {
-    animation-delay: 0.25s;
-}
-.func-item:nth-child(6) {
-    animation-delay: 0.30s;
-}
+.func-item:nth-child(1) { animation-delay: 0.05s; }
+.func-item:nth-child(2) { animation-delay: 0.10s; }
+.func-item:nth-child(3) { animation-delay: 0.15s; }
+.func-item:nth-child(4) { animation-delay: 0.20s; }
+.func-item:nth-child(5) { animation-delay: 0.25s; }
+.func-item:nth-child(6) { animation-delay: 0.30s; }
 
 .func-item:active {
     transform: scale(0.97);
