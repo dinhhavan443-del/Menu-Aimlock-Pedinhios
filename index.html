@@ -8,7 +8,6 @@
 </head>
 <body>
     <div class="app" id="app">
-        <!-- ===== HEADER ===== -->
         <div class="header">
             <div class="logo">🎯</div>
             <h1 class="title">AIM<span>LOCK</span></h1>
@@ -16,48 +15,30 @@
             <span class="badge" id="statusBadge">● ONLINE</span>
         </div>
 
-        <!-- ===== STATUS ===== -->
         <div class="status-box">
-            <div class="status-row">
-                <span>🎮 Trạng thái</span>
-                <span class="val" id="gameStatus">● Đang chạy</span>
-            </div>
-            <div class="status-row">
-                <span>⚡ Injection</span>
-                <span class="val warn" id="injStatus">○ Chưa kích hoạt</span>
-            </div>
-            <div class="status-row">
-                <span>🧩 Modules</span>
-                <span class="val" id="moduleCount">3 active</span>
-            </div>
+            <div class="status-row"><span>🎮 Trạng thái</span><span class="val" id="gameStatus">● Đang chạy</span></div>
+            <div class="status-row"><span>⚡ Injection</span><span class="val warn" id="injStatus">○ Chưa kích hoạt</span></div>
+            <div class="status-row"><span>🧩 Modules</span><span class="val" id="moduleCount">3 active</span></div>
         </div>
 
-        <!-- ===== KEY STATUS ===== -->
         <div class="key-status">
             <span class="label">🔑 KEY</span>
             <span class="value">Đã xác thực</span>
             <span class="expire">⏳ <span id="daysLeft">365</span> ngày</span>
         </div>
 
-        <!-- ===== TB INFO ===== -->
         <div class="tb-info">
             <span>📱 Thiết bị (TB)</span>
             <span class="val">1 TB (Cá nhân)</span>
         </div>
 
-        <!-- ===== GAME SELECT ===== -->
         <div class="game-select">
-            <button class="game-btn active" data-game="freefire" id="btnFF">
-                <span class="icon">🔥</span>FreeFire
-            </button>
-            <button class="game-btn" data-game="freefiremax" id="btnFFMax">
-                <span class="icon">💀</span>FreeFire Max
-            </button>
+            <button class="game-btn active" data-game="freefire" id="btnFF"><span class="icon">🔥</span>FreeFire</button>
+            <button class="game-btn" data-game="freefiremax" id="btnFFMax"><span class="icon">💀</span>FreeFire Max</button>
         </div>
 
-        <!-- ===== FUNC LIST ===== -->
         <div class="func-list" id="funcList">
-            <div class="func-item active" data-key="aimlock">
+            <div class="func-item active" data-key="aimlock" onclick="toggleFunc('aimlock')">
                 <span class="left"><span class="icon">🔴</span> AimLock</span>
                 <span class="func-right">
                     <span class="hint">Auto</span>
@@ -66,7 +47,7 @@
                     </div>
                 </span>
             </div>
-            <div class="func-item active" data-key="keoTam">
+            <div class="func-item active" data-key="keoTam" onclick="toggleFunc('keoTam')">
                 <span class="left"><span class="icon">🔵</span> Kéo Tầm Nhẹ</span>
                 <span class="func-right">
                     <span class="hint">1.5s</span>
@@ -75,7 +56,7 @@
                     </div>
                 </span>
             </div>
-            <div class="func-item active" data-key="fixLo">
+            <div class="func-item active" data-key="fixLo" onclick="toggleFunc('fixLo')">
                 <span class="left"><span class="icon">🔶</span> Fix Lỗ</span>
                 <span class="func-right">
                     <span class="hint">Stable</span>
@@ -84,7 +65,7 @@
                     </div>
                 </span>
             </div>
-            <div class="func-item" data-key="giamRung">
+            <div class="func-item" data-key="giamRung" onclick="toggleFunc('giamRung')">
                 <span class="left"><span class="icon">🔷</span> Giảm Rung</span>
                 <span class="func-right">
                     <span class="hint">Off</span>
@@ -93,7 +74,7 @@
                     </div>
                 </span>
             </div>
-            <div class="func-item" data-key="fixGiat">
+            <div class="func-item" data-key="fixGiat" onclick="toggleFunc('fixGiat')">
                 <span class="left"><span class="icon">🔸</span> Fix Giật</span>
                 <span class="func-right">
                     <span class="hint">Off</span>
@@ -102,7 +83,7 @@
                     </div>
                 </span>
             </div>
-            <div class="func-item" data-key="dpi">
+            <div class="func-item" data-key="dpi" onclick="toggleFunc('dpi')">
                 <span class="left"><span class="icon">🔹</span> DPI 2000</span>
                 <span class="func-right">
                     <span class="hint">Off</span>
@@ -113,20 +94,13 @@
             </div>
         </div>
 
-        <!-- ===== MAIN BUTTON ===== -->
         <button class="btn-main" id="btnMain">▶ ÁP DỤNG &amp; INJECT</button>
-
-        <!-- ===== EXTRA BUTTONS ===== -->
         <button class="open-btn" id="btnOpenGame">🚀 Mở Game</button>
         <button class="log-btn" id="btnViewLog">📋 Xem Log</button>
 
-        <!-- ===== TOAST ===== -->
         <div class="toast" id="toast">✅ Sẵn sàng · FreeFire</div>
-
-        <!-- ===== FOOTER ===== -->
         <div class="footer">📱 <span>Zalo: 0862937139</span> · Pedinhios</div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
