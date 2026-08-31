@@ -8,15 +8,25 @@
 </head>
 <body>
 
-<!-- ===== LOGIN SCREEN (NHẬP KEY) ===== -->
+<!-- ===== LOGIN SCREEN ===== -->
 <div id="loginScreen" class="login-screen">
     <div class="login-box">
+        <!-- Khung viền neon -->
+        <div class="glow-border"></div>
+        
         <div class="logo">🎯</div>
         <h1 class="title">AIM<span>LOCK</span></h1>
-        <p class="sub">Nhập key để kích hoạt</p>
-        <input type="text" id="keyInput" placeholder="ANHDINH-20260831-TB1-XXXXXX" class="key-input" />
+        <p class="sub">Nhập key để kích hoạt · Pedinhios</p>
+        
+        <input type="text" id="keyInput" 
+               placeholder="ANHDINH-20260830-TB1-00MMLB" 
+               class="key-input" 
+               value="ANHDINH-20260830-TB1-00MMLB" />
+        
         <button class="btn-login" id="btnLogin">▶ XÁC THỰC</button>
+        
         <div id="loginError" class="login-error"></div>
+        
         <p class="footer-text">📱 Zalo: 0862937139 · Pedinhios</p>
     </div>
 </div>
@@ -88,7 +98,6 @@
                 <div class="toggle" data-key="fixGiat"><div class="knob"></div></div>
             </span>
         </div>
-        <!-- THAY DPI BẰNG TỐI ƯU -->
         <div class="func-item" data-key="toiUu" onclick="toggleFunc('toiUu')">
             <span class="left"><span class="icon">⚡</span> Tối Ưu</span>
             <span class="func-right">
