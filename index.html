@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>AIMLOCK · ADMIN + UNLOCK</title>
+    <title>AIMLOCK ULTRA · FULL</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             min-height: 100vh;
             background: #050a12;
@@ -14,15 +18,28 @@
             align-items: center;
             font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
             padding: 10px;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* ===== CONTAINER CHÍNH ===== */
+        /* ===== PARTICLES ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== CONTAINER ===== */
         .container {
             width: 100%;
             max-width: 420px;
             background: #0c1624;
             border-radius: 32px;
-            padding: 20px 16px;
+            padding: 16px;
             border: 2px solid rgba(61, 212, 181, 0.15);
             box-shadow: 0 0 40px rgba(61, 212, 181, 0.05), 0 20px 80px rgba(0, 0, 0, 0.8);
             position: relative;
@@ -36,21 +53,21 @@
         /* ===== TAB ===== */
         .tab-bar {
             display: flex;
-            gap: 6px;
-            margin-bottom: 16px;
+            gap: 4px;
+            margin-bottom: 12px;
             background: #0a141e;
-            border-radius: 28px;
-            padding: 4px;
+            border-radius: 24px;
+            padding: 3px;
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
         .tab-btn {
             flex: 1;
-            padding: 10px 0;
+            padding: 8px 0;
             border: none;
-            border-radius: 24px;
+            border-radius: 20px;
             background: transparent;
             color: #4a5a66;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -61,7 +78,7 @@
             box-shadow: 0 4px 20px rgba(61, 212, 181, 0.04);
         }
         .tab-btn:active { transform: scale(0.95); }
-        .tab-btn .icon { font-size: 16px; display: block; margin-bottom: 2px; }
+        .tab-btn .icon { font-size: 14px; display: block; margin-bottom: 1px; }
 
         .tab-content { display: none; animation: slideUp 0.4s ease; }
         .tab-content.active { display: block; }
@@ -71,18 +88,18 @@
         }
 
         /* ===== UNLOCK ===== */
-        .logo { font-size: 40px; text-align: center; display: block; margin-bottom: 4px; }
-        .title { text-align: center; color: #e8f0f5; font-size: 22px; font-weight: 800; }
+        .logo { font-size: 36px; text-align: center; display: block; margin-bottom: 2px; }
+        .title { text-align: center; color: #e8f0f5; font-size: 20px; font-weight: 800; }
         .title span { color: #3dd4b5; }
-        .sub { text-align: center; color: #3a5a5a; font-size: 11px; margin-bottom: 14px; }
+        .sub { text-align: center; color: #3a5a5a; font-size: 10px; margin-bottom: 12px; }
         .input-key {
             width: 100%;
-            padding: 14px 18px;
-            border-radius: 32px;
+            padding: 12px 16px;
+            border-radius: 28px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             background: #0a141e;
             color: #b8c8d4;
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
             text-align: center;
             font-family: monospace;
@@ -94,38 +111,23 @@
         }
         .btn-primary {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: none;
-            border-radius: 32px;
+            border-radius: 28px;
             background: linear-gradient(135deg, #3dd4b5, #2a9a8a);
             color: #0a121a;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 8px;
             transition: all 0.3s;
         }
         .btn-primary:active { transform: scale(0.96); }
-        .btn-danger {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 32px;
-            background: #2a1a1a;
-            color: #d45a5a;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: all 0.3s;
-            border: 1px solid rgba(212, 90, 90, 0.1);
-        }
-        .btn-danger:active { transform: scale(0.96); }
-        .error { color: #d45a5a; font-size: 12px; margin-top: 8px; min-height: 18px; text-align: center; }
+        .error { color: #d45a5a; font-size: 11px; margin-top: 6px; min-height: 16px; text-align: center; }
         .debug-info {
             font-size: 9px;
             color: #3a5a5a;
-            margin-top: 8px;
+            margin-top: 6px;
             padding: 4px 8px;
             background: rgba(10, 20, 30, 0.4);
             border-radius: 12px;
@@ -133,32 +135,32 @@
             text-align: center;
         }
         .debug-info span { color: #3dd4b5; }
-        .zalo { text-align: center; color: #2a4a4a; font-size: 10px; margin-top: 12px; }
+        .zalo { text-align: center; color: #2a4a4a; font-size: 9px; margin-top: 10px; }
         .zalo span { color: #3a6a6a; }
 
         /* ===== ADMIN ===== */
-        .admin-section { margin-bottom: 14px; }
+        .admin-section { margin-bottom: 10px; }
         .admin-section label {
             color: #6a8a98;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
         .admin-section .row {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
         .admin-section .row .input-sm {
             flex: 1;
-            min-width: 60px;
-            padding: 10px 12px;
-            border-radius: 20px;
+            min-width: 50px;
+            padding: 8px 10px;
+            border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             background: #0a141e;
             color: #b8c8d4;
-            font-size: 13px;
+            font-size: 12px;
             outline: none;
             text-align: center;
             transition: all 0.3s;
@@ -166,70 +168,34 @@
         .admin-section .row .input-sm:focus {
             border-color: rgba(61, 212, 181, 0.3);
         }
-        .admin-section .row .input-sm::placeholder { color: #3a4a56; font-size: 11px; }
-        .admin-section .row .btn-sm {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 20px;
-            background: #1a2a3a;
-            color: #b8c8d4;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .admin-section .row .btn-sm:active { transform: scale(0.95); }
-        .admin-section .row .btn-sm.green { background: #1a2a2a; color: #3dd4b5; border: 1px solid rgba(61, 212, 181, 0.1); }
+        .admin-section .row .input-sm::placeholder { color: #3a4a56; font-size: 10px; }
 
-        .tb-btns {
+        .tb-btns, .day-btns {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             flex-wrap: wrap;
         }
-        .tb-btns .tb-btn {
-            padding: 6px 12px;
+        .tb-btns .tb-btn, .day-btns .day-btn {
+            padding: 4px 10px;
             border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 16px;
+            border-radius: 14px;
             background: #0a141e;
             color: #4a5a66;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
         }
-        .tb-btns .tb-btn:active { transform: scale(0.95); }
-        .tb-btns .tb-btn.active {
-            background: #1a2a3a;
-            border-color: rgba(61, 212, 181, 0.12);
-            color: #3dd4b5;
-        }
-
-        .day-btns {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .day-btns .day-btn {
-            padding: 6px 12px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 16px;
-            background: #0a141e;
-            color: #4a5a66;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .day-btns .day-btn:active { transform: scale(0.95); }
-        .day-btns .day-btn.active {
+        .tb-btns .tb-btn:active, .day-btns .day-btn:active { transform: scale(0.95); }
+        .tb-btns .tb-btn.active, .day-btns .day-btn.active {
             background: #1a2a3a;
             border-color: rgba(61, 212, 181, 0.12);
             color: #3dd4b5;
         }
 
         .key-list {
-            margin-top: 12px;
-            max-height: 300px;
+            margin-top: 8px;
+            max-height: 150px;
             overflow-y: auto;
         }
         .key-list::-webkit-scrollbar { width: 2px; }
@@ -238,32 +204,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 12px;
+            padding: 5px 10px;
             background: #0a141e;
-            border-radius: 16px;
-            margin-bottom: 4px;
+            border-radius: 12px;
+            margin-bottom: 3px;
             border: 1px solid rgba(255, 255, 255, 0.02);
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 3px;
         }
         .key-item .info {
-            font-size: 10px;
+            font-size: 9px;
             color: #4a5a66;
             flex: 1;
-            min-width: 120px;
+            min-width: 100px;
         }
-        .key-item .info .key-text { color: #b8c8d4; font-weight: 600; font-family: monospace; font-size: 11px; }
-        .key-item .info .key-detail { color: #3a5a5a; font-size: 9px; }
+        .key-item .info .key-text { color: #b8c8d4; font-weight: 600; font-family: monospace; font-size: 10px; }
+        .key-item .info .key-detail { color: #3a5a5a; font-size: 8px; }
         .key-item .info .key-detail .tb { color: #3dd4b5; }
-        .key-item .actions {
-            display: flex;
-            gap: 4px;
-        }
+        .key-item .actions { display: flex; gap: 3px; }
         .key-item .actions .act-btn {
-            padding: 4px 10px;
+            padding: 2px 8px;
             border: none;
-            border-radius: 12px;
-            font-size: 9px;
+            border-radius: 10px;
+            font-size: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -274,15 +237,15 @@
 
         .admin-tools {
             display: flex;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 6px;
+            margin-top: 8px;
         }
         .admin-tools .btn-tool {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             border: none;
-            border-radius: 20px;
-            font-size: 12px;
+            border-radius: 16px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -294,42 +257,242 @@
         .admin-tools .btn-tool.danger { color: #d45a5a; border-color: rgba(212, 90, 90, 0.05); }
 
         .toast {
-            margin-top: 10px;
-            padding: 10px 14px;
-            border-radius: 20px;
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 16px;
             background: rgba(61, 212, 181, 0.03);
             border: 1px solid rgba(61, 212, 181, 0.04);
             color: #7ab8a8;
-            font-size: 12px;
+            font-size: 11px;
             text-align: center;
-            min-height: 36px;
+            min-height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.4s;
         }
 
         .status-badge {
             display: inline-block;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 8px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-size: 7px;
             font-weight: 600;
         }
         .status-badge.active { background: rgba(61, 212, 181, 0.1); color: #3dd4b5; }
         .status-badge.expired { background: rgba(212, 90, 90, 0.1); color: #d45a5a; }
 
+        /* ===== MAIN APP (FUNCTIONS) ===== */
+        .key-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0a141e;
+            border-radius: 20px;
+            padding: 6px 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+        .key-status .label { font-size: 9px; color: #3a5a5a; font-weight: 500; }
+        .key-status .value { font-size: 10px; font-weight: 600; color: #3dd4b5; }
+        .key-status .expire { font-size: 9px; color: #3a5a5a; }
+        .key-status .expire span { color: #d4b83a; font-weight: 600; }
+
+        .tb-info {
+            background: #0a141e;
+            border-radius: 14px;
+            padding: 4px 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: #3a5a5a;
+        }
+        .tb-info .tb-value { color: #3dd4b5; font-weight: 700; font-size: 12px; }
+
+        .game-select {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        .game-btn {
+            flex: 1;
+            padding: 8px 0;
+            border: none;
+            border-radius: 24px;
+            background: #0a141e;
+            color: #4a5a66;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        .game-btn:active { transform: scale(0.95); }
+        .game-btn.active {
+            background: #1a2a3a;
+            border-color: rgba(61, 212, 181, 0.12);
+            color: #b8c8d4;
+        }
+        .game-btn .game-icon { font-size: 16px; display: block; margin-bottom: 1px; }
+
+        .func-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+        .func-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 12px;
+            background: #0a141e;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .func-item:active { transform: scale(0.97); }
+        .func-item.active {
+            background: #111e2a;
+            border-color: #3dd4b5;
+            box-shadow: 0 0 20px rgba(61, 212, 181, 0.05);
+        }
+        .func-item .left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6a8a98;
+        }
+        .func-item.active .left { color: #b8c8d4; }
+        .func-item .left .icon { font-size: 13px; width: 20px; text-align: center; }
+
+        .toggle-switch {
+            width: 38px;
+            height: 20px;
+            background: #1a2a36;
+            border-radius: 40px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .toggle-switch.active {
+            background: #3dd4b5;
+            border-color: rgba(61, 212, 181, 0.2);
+            box-shadow: 0 0 20px rgba(61, 212, 181, 0.1);
+        }
+        .toggle-switch .knob {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
+            background: #2a3a46;
+            border-radius: 50%;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        .toggle-switch.active .knob {
+            left: 20px;
+            background: #0a121a;
+        }
+        .func-item .value-hint {
+            font-size: 9px;
+            color: #3a5a5a;
+            font-weight: 500;
+            min-width: 25px;
+            text-align: right;
+        }
+        .func-item.active .value-hint { color: #5a8a8a; }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            margin: 4px 0 8px;
+        }
+
+        .btn-main {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 28px;
+            background: #18222e;
+            color: #4a5a66;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-main.active {
+            background: linear-gradient(135deg, #3dd4b5, #2a9a8a);
+            color: #0a121a;
+            box-shadow: 0 4px 30px rgba(61, 212, 181, 0.15);
+        }
+
         .footer-text {
             text-align: center;
-            font-size: 8px;
+            font-size: 7px;
             color: #16202a;
-            margin-top: 12px;
-            letter-spacing: 0.8px;
+            margin-top: 8px;
+            letter-spacing: 0.6px;
+        }
+
+        /* ===== LOGOUT ===== */
+        .logout-btn {
+            background: rgba(212, 90, 90, 0.08);
+            border: 1px solid rgba(212, 90, 90, 0.12);
+            color: #d45a5a;
+            padding: 2px 10px;
+            border-radius: 14px;
+            font-size: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            float: right;
+            margin-top: -6px;
+        }
+        .logout-btn:active { transform: scale(0.95); }
+
+        .online-badge {
+            display: inline-block;
+            background: rgba(61, 212, 181, 0.08);
+            padding: 1px 12px;
+            border-radius: 40px;
+            font-size: 8px;
+            color: #3dd4b5;
+            border: 1px solid rgba(61, 212, 181, 0.06);
+            animation: pulseOnline 2s infinite;
+        }
+        @keyframes pulseOnline {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 420px) {
+            .container { padding: 12px; }
+            .func-item { padding: 5px 10px; }
+            .func-item .left { font-size: 11px; }
+            .btn-main { font-size: 13px; padding: 10px; }
+            .game-btn { font-size: 11px; padding: 6px 0; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ===== PARTICLES ===== -->
+    <canvas id="particles-canvas"></canvas>
 
     <div class="container">
         <!-- ===== TAB ===== -->
@@ -339,6 +502,9 @@
             </button>
             <button class="tab-btn" data-tab="admin">
                 <span class="icon">⚙️</span> Admin
+            </button>
+            <button class="tab-btn" data-tab="main">
+                <span class="icon">🎯</span> Main
             </button>
         </div>
 
@@ -356,9 +522,8 @@
 
         <!-- ===== TAB ADMIN ===== -->
         <div class="tab-content" id="tab-admin">
-            <div class="title" style="font-size:18px;margin-bottom:12px;">⚙️ <span>TẠO KEY</span></div>
+            <div class="title" style="font-size:16px;margin-bottom:8px;">⚙️ <span>TẠO KEY</span></div>
 
-            <!-- TB -->
             <div class="admin-section">
                 <label>📱 Số thiết bị (TB)</label>
                 <div class="tb-btns" id="tbBtns">
@@ -372,52 +537,206 @@
                 </div>
             </div>
 
-            <!-- Days -->
             <div class="admin-section">
                 <label>⏳ Thời hạn</label>
                 <div class="day-btns" id="dayBtns">
-                    <button class="day-btn" data-days="1">1 ngày</button>
-                    <button class="day-btn" data-days="3">3 ngày</button>
-                    <button class="day-btn" data-days="7">7 ngày</button>
-                    <button class="day-btn active" data-days="30">30 ngày</button>
-                    <button class="day-btn" data-days="90">90 ngày</button>
-                    <button class="day-btn" data-days="180">180 ngày</button>
-                    <button class="day-btn" data-days="365">365 ngày</button>
+                    <button class="day-btn" data-days="1">1</button>
+                    <button class="day-btn" data-days="3">3</button>
+                    <button class="day-btn" data-days="7">7</button>
+                    <button class="day-btn active" data-days="30">30</button>
+                    <button class="day-btn" data-days="90">90</button>
+                    <button class="day-btn" data-days="180">180</button>
+                    <button class="day-btn" data-days="365">365</button>
                 </div>
             </div>
 
-            <!-- User -->
             <div class="admin-section">
                 <label>👤 Tên người dùng</label>
-                <input class="input-key" id="userInput" placeholder="Pedinhios" style="text-align:left;font-family:sans-serif;font-size:14px;" />
+                <input class="input-key" id="userInput" placeholder="Pedinhios" style="text-align:left;font-family:sans-serif;font-size:13px;" />
             </div>
 
-            <button class="btn-primary" id="createKeyBtn">▶ TẠO KEY</button>
+            <button class="btn-primary" id="createKeyBtn" style="padding:10px;font-size:14px;">▶ TẠO KEY</button>
 
-            <!-- Danh sách key -->
-            <div style="margin-top:14px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                    <span style="color:#3a5a5a;font-size:11px;font-weight:600;">📋 Danh sách key (<span id="keyCount">0</span>)</span>
-                    <div style="display:flex;gap:4px;">
-                        <button class="act-btn" id="refreshKeys" style="background:rgba(61,212,181,0.05);color:#3a5a5a;border:none;padding:3px 10px;border-radius:10px;font-size:9px;cursor:pointer;">🔄 Làm mới</button>
-                    </div>
+            <div style="margin-top:10px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                    <span style="color:#3a5a5a;font-size:10px;font-weight:600;">📋 Danh sách key (<span id="keyCount">0</span>)</span>
+                    <button id="refreshKeys" style="background:rgba(61,212,181,0.05);color:#3a5a5a;border:none;padding:2px 8px;border-radius:10px;font-size:8px;cursor:pointer;">🔄 Làm mới</button>
                 </div>
                 <div class="key-list" id="keyList">
-                    <div style="color:#3a5a5a;font-size:10px;text-align:center;padding:12px;">Chưa có key nào</div>
+                    <div style="color:#3a5a5a;font-size:9px;text-align:center;padding:8px;">Chưa có key nào</div>
                 </div>
-                <div style="display:flex;gap:6px;margin-top:8px;">
-                    <button class="btn-tool danger" id="deleteAllKeys">🗑️ Xóa tất cả</button>
+                <div style="display:flex;gap:4px;margin-top:6px;">
+                    <button class="btn-tool danger" id="deleteAllKeys" style="padding:6px;font-size:10px;">🗑️ Xóa tất cả</button>
                 </div>
             </div>
 
             <div class="toast" id="adminToast">✅ Sẵn sàng</div>
-            <div class="footer-text">AIMLOCK · ADMIN + UNLOCK</div>
+        </div>
+
+        <!-- ===== TAB MAIN (APP) ===== -->
+        <div class="tab-content" id="tab-main">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <div class="title" style="font-size:18px;">AIM<span>LOCK</span></div>
+                <button class="logout-btn" id="logoutBtn">🚪 ĐĂNG XUẤT</button>
+            </div>
+            <div style="text-align:center;margin-bottom:6px;">
+                <span class="online-badge">● ONLINE</span>
+            </div>
+
+            <div class="key-status" id="keyStatus">
+                <span class="label">🔑 KEY</span>
+                <span class="value" id="keyDisplay">Chưa đăng nhập</span>
+                <span class="expire" id="expireDisplay">⏳ Còn: <span id="daysLeft">--</span> ngày</span>
+            </div>
+
+            <div class="tb-info">
+                📱 Thiết bị (TB) · <span class="tb-value" id="tbDisplay">1 TB</span>
+            </div>
+
+            <div class="game-select">
+                <button class="game-btn active" data-game="freefire" id="gameFF">
+                    <span class="game-icon">🔥</span>FreeFire
+                </button>
+                <button class="game-btn" data-game="freefiremax" id="gameFFMax">
+                    <span class="game-icon">💀</span>FreeFire Max
+                </button>
+            </div>
+
+            <div class="func-list" id="funcList">
+                <div class="func-item active" data-key="aimlock">
+                    <span class="left"><span class="icon">🎯</span> AimLock</span>
+                    <span class="right" style="display:flex;align-items:center;gap:6px;">
+                        <span class="value-hint">Auto</span>
+                        <div class="toggle-switch active" data-key="aimlock"><div class="knob"></div></div>
+                    </span>
+                </div>
+                <div class="func-item active" data-key="keoTam">
+                    <span class="left"><span class="icon">📏</span> Kéo Tầm Nhẹ</span>
+                    <span class="right" style="display:flex;align-items:center;gap:6px;">
+                        <span class="value-hint">1.5s</span>
+                        <div class="toggle-switch active" data-key="keoTam"><div class="knob"></div></div>
+                    </span>
+                </div>
+                <div class="func-item active" data-key="fixLo">
+                    <span class="left"><span class="icon">🔧</span> Fix Lỗ</span>
+                    <span class="right" style="display:flex;align-items:center;gap:6px;">
+                        <span class="value-hint">Stable</span>
+                        <div class="toggle-switch active" data-key="fixLo"><div class="knob"></div></div>
+                    </span>
+                </div>
+                <div class="func-item" data-key="giamRung">
+                    <span class="left"><span class="icon">📳</span> Giảm Rung</span>
+                    <span class="right" style="display:flex;align-items:center;gap:6px;">
+                        <span class="value-hint">Off</span>
+                        <div class="toggle-switch" data-key="giamRung"><div class="knob"></div></div>
+                    </span>
+                </div>
+                <div class="func-item" data-key="fixGiat">
+                    <span class="left"><span class="icon">⚡</span> Fix Giật</span>
+                    <span class="right" style="display:flex;align-items:center;gap:6px;">
+                        <span class="value-hint">Off</span>
+                        <div class="toggle-switch" data-key="fixGiat"><div class="knob"></div></div>
+                    </span>
+                </div>
+                <div class="func-item" data-key="toiUuFF">
+                    <span class="left"><span class="icon">⚡</span> Tối Ưu FF</span>
+                    <span class="right" style="display:flex;align-items:center;gap:6px;">
+                        <span class="value-hint">Off</span>
+                        <div class="toggle-switch" data-key="toiUuFF"><div class="knob"></div></div>
+                    </span>
+                </div>
+                <div class="func-item" data-key="toiUuCPU">
+                    <span class="left"><span class="icon">🔄</span> Tối Ưu CPU</span>
+                    <span class="right" style="display:flex;align-items:center;gap:6px;">
+                        <span class="value-hint">Off</span>
+                        <div class="toggle-switch" data-key="toiUuCPU"><div class="knob"></div></div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <button class="btn-main active" id="btnMain">▶ ÁP DỤNG & INJECT</button>
+
+            <div class="toast" id="mainToast" style="margin-top:8px;">
+                <span id="toastMsg">Sẵn sàng · FreeFire</span>
+            </div>
+
+            <div class="footer-text">PALOFSC · SERAPH · ULTRA · AUTO INJECT</div>
         </div>
     </div>
 
     <script>
         // ============================================================
-        // GỘP ADMIN + UNLOCK
+        // PARTICLES
+        // ============================================================
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(61, 212, 181, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 80; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update();
+                p.draw(); });
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(61, 212, 181, ${0.05 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ============================================================
+        // SCRIPT CHÍNH
         // ============================================================
 
         // ===== DOM =====
@@ -432,9 +751,33 @@
         var adminToast = document.getElementById('adminToast');
         var refreshKeys = document.getElementById('refreshKeys');
         var deleteAllKeys = document.getElementById('deleteAllKeys');
+        var logoutBtn = document.getElementById('logoutBtn');
+        var daysLeftEl = document.getElementById('daysLeft');
+        var expireDisplay = document.getElementById('expireDisplay');
+        var tbDisplay = document.getElementById('tbDisplay');
+        var keyDisplay = document.getElementById('keyDisplay');
+        var mainToast = document.getElementById('mainToast');
+        var toastMsg = document.getElementById('toastMsg');
+        var btnMain = document.getElementById('btnMain');
 
         var selectedTb = 1;
         var selectedDays = 30;
+        var currentGame = 'freefire';
+        var isLoggedIn = false;
+        var keyExpireDate = null;
+        var currentTb = 1;
+        var currentUser = '';
+
+        // ===== STATE =====
+        var state = {
+            aimlock: true,
+            keoTam: true,
+            fixLo: true,
+            giamRung: false,
+            fixGiat: false,
+            toiUuFF: false,
+            toiUuCPU: false
+        };
 
         // ===== TAB =====
         document.querySelectorAll('.tab-btn').forEach(function(btn) {
@@ -445,6 +788,7 @@
                 document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
                 document.getElementById('tab-' + tab).classList.add('active');
                 if (tab === 'admin') renderKeys();
+                if (tab === 'main' && isLoggedIn) updateUI();
             });
         });
 
@@ -515,7 +859,7 @@
             });
             saveKeys(keys);
             renderKeys();
-            showAdminToast('✅ Đã tạo key: ' + key, 'success');
+            showAdminToast('✅ Đã tạo key: ' + key);
             return key;
         }
 
@@ -524,21 +868,21 @@
             keys = keys.filter(function(k) { return k.key !== keyToDelete; });
             saveKeys(keys);
             renderKeys();
-            showAdminToast('🗑️ Đã xóa key', 'success');
+            showAdminToast('🗑️ Đã xóa key');
         }
 
         function deleteAllKeys() {
             if (confirm('⚠️ Bạn có chắc muốn xóa TẤT CẢ key?')) {
                 saveKeys([]);
                 renderKeys();
-                showAdminToast('🗑️ Đã xóa tất cả key', 'success');
+                showAdminToast('🗑️ Đã xóa tất cả key');
             }
         }
 
         function copyKey(key) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(key).then(function() {
-                    showAdminToast('📋 Đã copy: ' + key, 'success');
+                    showAdminToast('📋 Đã copy: ' + key);
                 }).catch(function() {
                     fallbackCopy(key);
                 });
@@ -554,20 +898,20 @@
             textarea.select();
             try {
                 document.execCommand('copy');
-                showAdminToast('📋 Đã copy: ' + text, 'success');
+                showAdminToast('📋 Đã copy: ' + text);
             } catch (e) {
-                showAdminToast('❌ Không thể copy', 'error');
+                showAdminToast('❌ Không thể copy');
             }
             document.body.removeChild(textarea);
         }
 
-        // ===== RENDER =====
+        // ===== RENDER KEYS =====
         function renderKeys() {
             var keys = getKeys();
             keyCount.textContent = keys.length;
 
             if (keys.length === 0) {
-                keyList.innerHTML = '<div style="color:#3a5a5a;font-size:10px;text-align:center;padding:12px;">Chưa có key nào</div>';
+                keyList.innerHTML = '<div style="color:#3a5a5a;font-size:9px;text-align:center;padding:8px;">Chưa có key nào</div>';
                 return;
             }
 
@@ -594,7 +938,7 @@
                                 ${k.days || 365} ngày · 
                                 ${daysText}
                             </div>
-                            <div style="margin-top:2px;">${status}</div>
+                            <div style="margin-top:1px;">${status}</div>
                         </div>
                         <div class="actions">
                             <button class="act-btn copy" onclick="copyKey('${k.key}')">COPY</button>
@@ -607,14 +951,12 @@
         }
 
         // ===== ADMIN TOAST =====
-        function showAdminToast(msg, type) {
+        function showAdminToast(msg) {
             adminToast.textContent = msg;
-            adminToast.style.color = type === 'success' ? '#7ab8a8' : '#d45a5a';
             clearTimeout(adminToast._timer);
             adminToast._timer = setTimeout(function() {
                 adminToast.textContent = '✅ Sẵn sàng';
-                adminToast.style.color = '#7ab8a8';
-            }, 3000);
+            }, 2500);
         }
 
         // ============================================================
@@ -647,11 +989,28 @@
             if (!inputKey) { loginError.textContent = '⚠️ Vui lòng nhập key'; return; }
             var result = isValidKey(inputKey);
             if (result.valid) {
+                isLoggedIn = true;
+                keyExpireDate = result.expire;
+                currentTb = result.tb || 1;
+                currentUser = result.user || 'Pedinhios';
+                localStorage.setItem('aim_logged', '1');
+                localStorage.setItem('aim_key', inputKey);
+                localStorage.setItem('aim_expire', result.expire.toISOString());
+                localStorage.setItem('aim_tb', currentTb);
+                localStorage.setItem('aim_user', currentUser);
+
                 loginError.textContent = '';
                 loginError.style.color = '#3dd4b5';
-                loginError.textContent = '✅ Đăng nhập thành công! TB: ' + result.tb + ' · Còn ' + Math.ceil((result.expire.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) + ' ngày';
-                debugInfo.innerHTML = '✅ Chào mừng ' + (result.user || 'Pedinhios') + '! Key: <span>' + inputKey + '</span>';
-                showAdminToast('✅ Đăng nhập thành công!', 'success');
+                loginError.textContent = '✅ Đăng nhập thành công!';
+
+                // Chuyển sang tab Main
+                document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                document.querySelector('[data-tab="main"]').classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+                document.getElementById('tab-main').classList.add('active');
+
+                updateUI();
+                showMainToast('✅ Đăng nhập thành công!');
             } else {
                 loginError.textContent = '❌ ' + result.reason;
                 loginError.style.color = '#d45a5a';
@@ -660,14 +1019,253 @@
             }
         }
 
+        function doLogout() {
+            if (confirm('🚪 Bạn có chắc muốn đăng xuất?')) {
+                localStorage.removeItem('aim_logged');
+                localStorage.removeItem('aim_key');
+                localStorage.removeItem('aim_expire');
+                localStorage.removeItem('aim_tb');
+                localStorage.removeItem('aim_user');
+                localStorage.removeItem('aim_inj');
+                localStorage.removeItem('aim_inj_time');
+                localStorage.removeItem('aim_inj_game');
+                localStorage.removeItem('aim_inj_funcs');
+                isLoggedIn = false;
+                keyExpireDate = null;
+
+                // Chuyển về tab Unlock
+                document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                document.querySelector('[data-tab="unlock"]').classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+                document.getElementById('tab-unlock').classList.add('active');
+
+                keyInput.value = '';
+                keyInput.focus();
+                showMainToast('🚪 Đã đăng xuất');
+            }
+        }
+
+        // ============================================================
+        // MAIN APP
+        // ============================================================
+        function updateUI() {
+            var days = 0;
+            if (keyExpireDate) {
+                var now = new Date();
+                days = Math.ceil((keyExpireDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+                days = days > 0 ? days : 0;
+            }
+            daysLeftEl.textContent = days;
+            if (days <= 3) daysLeftEl.style.color = '#d45a5a';
+            else if (days <= 7) daysLeftEl.style.color = '#d4b83a';
+            else daysLeftEl.style.color = '#3dd4b5';
+
+            var label = currentTb + ' TB';
+            if (currentTb === 1) label = '1 TB (Cá nhân)';
+            else if (currentTb === 2) label = '2 TB (Gia đình)';
+            else if (currentTb === 3) label = '3 TB (Nhóm)';
+            else if (currentTb === 5) label = '5 TB (Team)';
+            tbDisplay.textContent = label;
+            keyDisplay.textContent = '✅ ' + (currentUser || 'Đã xác thực');
+
+            // Load state
+            var savedGame = localStorage.getItem('aim_curr');
+            if (savedGame === 'freefiremax') { selectGame('freefiremax'); } else { selectGame('freefire'); }
+
+            var keys = Object.keys(state);
+            for (var i = 0; i < keys.length; i++) {
+                var k = keys[i];
+                var val = localStorage.getItem('aim_state_' + k);
+                state[k] = (val === '1');
+                updateItem(k, state[k]);
+            }
+
+            var isInjected = localStorage.getItem('aim_inj') === '1';
+            if (isInjected) {
+                btnMain.textContent = '⏹ GỠ BỎ & KHÔI PHỤC';
+                btnMain.className = 'btn-main active';
+                var funcs = localStorage.getItem('aim_inj_funcs');
+                if (funcs) {
+                    try {
+                        var parsed = JSON.parse(funcs);
+                        showMainToast('⚡ Đã inject: ' + parsed.join(' + '));
+                    } catch (e) {}
+                }
+            } else {
+                btnMain.textContent = '▶ ÁP DỤNG & INJECT';
+                btnMain.className = 'btn-main active';
+            }
+        }
+
+        function updateItem(key, isOn) {
+            var item = document.querySelector('.func-item[data-key="' + key + '"]');
+            if (!item) return;
+            var toggle = item.querySelector('.toggle-switch');
+            var hint = item.querySelector('.value-hint');
+            if (isOn) {
+                item.classList.add('active');
+                if (toggle) toggle.classList.add('active');
+                if (hint) {
+                    var map = {
+                        aimlock: 'Auto',
+                        keoTam: '1.5s',
+                        fixLo: 'Stable',
+                        giamRung: 'On',
+                        fixGiat: 'On',
+                        toiUuFF: 'On',
+                        toiUuCPU: 'On'
+                    };
+                    hint.textContent = map[key] || 'On';
+                }
+            } else {
+                item.classList.remove('active');
+                if (toggle) toggle.classList.remove('active');
+                if (hint) hint.textContent = 'Off';
+            }
+        }
+
+        function toggleFunc(key, displayName, icon) {
+            state[key] = !state[key];
+            updateItem(key, state[key]);
+            var status = state[key] ? 'BẬT' : 'TẮT';
+            showMainToast(icon + ' ' + displayName + ' ' + status);
+            localStorage.setItem('aim_state_' + key, state[key] ? '1' : '0');
+        }
+
+        function getActiveFunctions() {
+            var active = [];
+            if (state.aimlock) active.push('AimLock');
+            if (state.keoTam) active.push('Kéo Tầm');
+            if (state.fixLo) active.push('Fix Lỗ');
+            if (state.giamRung) active.push('Giảm Rung');
+            if (state.fixGiat) active.push('Fix Giật');
+            if (state.toiUuFF) active.push('Tối Ưu FF');
+            if (state.toiUuCPU) active.push('Tối Ưu CPU');
+            return active;
+        }
+
+        function showMainToast(msg) {
+            toastMsg.textContent = msg;
+            mainToast.style.color = '#7ab8a8';
+            clearTimeout(mainToast._timer);
+            mainToast._timer = setTimeout(function() {
+                toastMsg.textContent = 'Sẵn sàng · ' + (currentGame === 'freefire' ? 'FreeFire' : 'FreeFire Max');
+                mainToast.style.color = '#7ab8a8';
+            }, 3000);
+        }
+
+        function injectToGame() {
+            var active = getActiveFunctions();
+            if (active.length === 0) {
+                showMainToast('⚠️ Chưa chọn chức năng!');
+                return false;
+            }
+
+            var gameName = currentGame === 'freefire' ? 'FreeFire' : 'FreeFire Max';
+            console.log('[INJECT]', gameName, active);
+
+            localStorage.setItem('aim_inj', '1');
+            localStorage.setItem('aim_inj_time', new Date().toISOString());
+            localStorage.setItem('aim_inj_game', currentGame);
+            localStorage.setItem('aim_inj_funcs', JSON.stringify(active));
+
+            showMainToast('✅ Đã inject ' + active.length + ' chức năng vào ' + gameName);
+            return true;
+        }
+
+        function removeInject() {
+            console.log('[REMOVE] Xóa inject');
+            localStorage.removeItem('aim_inj');
+            localStorage.removeItem('aim_inj_time');
+            localStorage.removeItem('aim_inj_game');
+            localStorage.removeItem('aim_inj_funcs');
+            showMainToast('🔄 Đã gỡ inject, game trở về bình thường');
+        }
+
+        function handleMain() {
+            if (!isLoggedIn) {
+                showMainToast('⚠️ Vui lòng đăng nhập trước!');
+                return;
+            }
+
+            var anyOn = false;
+            for (var k in state) { if (state[k]) { anyOn = true; break; } }
+            if (!anyOn) { showMainToast('⚠️ Vui lòng bật ít nhất 1 chức năng'); return; }
+
+            var isInjected = localStorage.getItem('aim_inj') === '1';
+            if (isInjected) {
+                if (confirm('🔄 Đã inject. Gỡ bỏ và khôi phục?')) {
+                    removeInject();
+                    btnMain.textContent = '▶ ÁP DỤNG & INJECT';
+                    btnMain.className = 'btn-main active';
+                }
+                return;
+            }
+            if (injectToGame()) {
+                btnMain.textContent = '⏹ GỠ BỎ & KHÔI PHỤC';
+                btnMain.className = 'btn-main active';
+            }
+        }
+
+        function selectGame(game) {
+            currentGame = game;
+            var gameFF = document.getElementById('gameFF');
+            var gameFFMax = document.getElementById('gameFFMax');
+            if (game === 'freefire') { gameFF.classList.add('active');
+                gameFFMax.classList.remove('active'); } else { gameFFMax.classList.add('active');
+                gameFF.classList.remove('active'); }
+            toastMsg.textContent = 'Sẵn sàng · ' + (game === 'freefire' ? 'FreeFire' : 'FreeFire Max');
+            localStorage.setItem('aim_curr', game);
+        }
+
         // ============================================================
         // EVENTS
         // ============================================================
         keyInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
         loginBtn.addEventListener('click', doLogin);
+        logoutBtn.addEventListener('click', doLogout);
         createKeyBtn.addEventListener('click', createKey);
         refreshKeys.addEventListener('click', renderKeys);
         deleteAllKeys.addEventListener('click', deleteAllKeys);
+        btnMain.addEventListener('click', handleMain);
+
+        document.getElementById('gameFF').addEventListener('click', function() { selectGame('freefire'); });
+        document.getElementById('gameFFMax').addEventListener('click', function() { selectGame('freefiremax'); });
+
+        document.querySelectorAll('.toggle-switch').forEach(function(toggle) {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var key = this.dataset.key;
+                var map = {
+                    aimlock: ['AimLock', '🎯'],
+                    keoTam: ['Kéo Tầm Nhẹ', '📏'],
+                    fixLo: ['Fix Lỗ', '🔧'],
+                    giamRung: ['Giảm Rung', '📳'],
+                    fixGiat: ['Fix Giật', '⚡'],
+                    toiUuFF: ['Tối Ưu FF', '⚡'],
+                    toiUuCPU: ['Tối Ưu CPU', '🔄']
+                };
+                var data = map[key] || [key, '●'];
+                toggleFunc(key, data[0], data[1]);
+            });
+        });
+
+        document.querySelectorAll('.func-item').forEach(function(item) {
+            item.addEventListener('click', function() {
+                var key = this.dataset.key;
+                var map = {
+                    aimlock: ['AimLock', '🎯'],
+                    keoTam: ['Kéo Tầm Nhẹ', '📏'],
+                    fixLo: ['Fix Lỗ', '🔧'],
+                    giamRung: ['Giảm Rung', '📳'],
+                    fixGiat: ['Fix Giật', '⚡'],
+                    toiUuFF: ['Tối Ưu FF', '⚡'],
+                    toiUuCPU: ['Tối Ưu CPU', '🔄']
+                };
+                var data = map[key] || [key, '●'];
+                toggleFunc(key, data[0], data[1]);
+            });
+        });
 
         // ============================================================
         // INIT
@@ -676,27 +1274,67 @@
             var keys = getKeys();
             if (keys.length === 0) {
                 var defaultKeys = [
-                    { key: 'ANHDINH-20260901-TB1-53373R', expire: '2027-09-01T04:53:00.000Z', tb: 1, days: 365, user: 'Pedinhios' },
-                    { key: 'ANHDINH-20260901-TB5-NR9WLB', expire: '2027-09-01T04:52:00.000Z', tb: 5, days: 365, user: 'Pedinhios' },
-                    { key: 'ANHDINH-20260901-TB1-02304W', expire: '2027-08-31T18:41:00.000Z', tb: 1, days: 365, user: 'Pedinhios' }
+                    { key: 'ANHDINH-20260901-TB1-53373R', expire: '2027-09-01T04:53:00.000Z', tb: 1, days: 365,
+                        user: 'Pedinhios' },
+                    { key: 'ANHDINH-20260901-TB5-NR9WLB', expire: '2027-09-01T04:52:00.000Z', tb: 5, days: 365,
+                        user: 'Pedinhios' },
+                    { key: 'ANHDINH-20260901-TB1-02304W', expire: '2027-08-31T18:41:00.000Z', tb: 1, days: 365,
+                        user: 'Pedinhios' }
                 ];
                 saveKeys(defaultKeys);
                 debugInfo.innerHTML = '✅ Đã thêm ' + defaultKeys.length + ' key mặc định!';
             }
         }
 
-        initDefaultKeys();
-        renderKeys();
-        debugInfo.innerHTML = '🔍 Nhập key để kích hoạt';
+        function checkLogin() {
+            initDefaultKeys();
+            renderKeys();
 
-        console.log('[AIMLOCK] Admin + Unlock đã sẵn sàng!');
-        console.log('[AIMLOCK] Zalo: 0862937139');
+            if (localStorage.getItem('aim_logged') === '1') {
+                var savedKey = localStorage.getItem('aim_key');
+                if (savedKey) {
+                    var result = isValidKey(savedKey);
+                    if (result.valid) {
+                        isLoggedIn = true;
+                        keyExpireDate = result.expire;
+                        currentTb = result.tb || 1;
+                        currentUser = result.user || 'Pedinhios';
+                        // Chuyển sang tab Main
+                        document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                        document.querySelector('[data-tab="main"]').classList.add('active');
+                        document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+                        document.getElementById('tab-main').classList.add('active');
+                        updateUI();
+                        return;
+                    } else {
+                        localStorage.removeItem('aim_logged');
+                        localStorage.removeItem('aim_key');
+                        localStorage.removeItem('aim_expire');
+                        localStorage.removeItem('aim_tb');
+                        localStorage.removeItem('aim_user');
+                    }
+                }
+            }
 
-        // Thêm style shake
+            // Mặc định ở tab Unlock
+            document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+            document.querySelector('[data-tab="unlock"]').classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+            document.getElementById('tab-unlock').classList.add('active');
+            debugInfo.innerHTML = '🔍 Nhập key để kích hoạt';
+            if (keyInput) keyInput.focus();
+        }
+
+        // ===== START =====
+        checkLogin();
+
         var shakeStyle = document.createElement('style');
         shakeStyle.textContent =
             '@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}';
         document.head.appendChild(shakeStyle);
+
+        console.log('[AIMLOCK] FULL - Admin + Unlock + Main');
+        console.log('[AIMLOCK] Zalo: 0862937139');
     </script>
 
 </body>
