@@ -770,6 +770,48 @@
         var keyExpireDate = null;
         var currentTb = 1;
 
+        // ============================================================
+        // DEFAULT KEYS - TỰ ĐỘNG THÊM KEY MẶC ĐỊNH
+        // ============================================================
+        function initDefaultKeys() {
+            try {
+                var keys = JSON.parse(localStorage.getItem('tipa_keys') || '[]');
+                
+                // Nếu chưa có key nào, thêm key mặc định
+                if (keys.length === 0) {
+                    var defaultKeys = [
+                        {
+                            key: 'ANHDINH-20260901-TB1-53373R',
+                            expire: '2027-09-01T04:53:00.000Z',
+                            tb: 1,
+                            days: 365,
+                            user: 'Pedinhios'
+                        },
+                        {
+                            key: 'ANHDINH-20260901-TB5-NR9WLB',
+                            expire: '2027-09-01T04:52:00.000Z',
+                            tb: 5,
+                            days: 365,
+                            user: 'Pedinhios'
+                        },
+                        {
+                            key: 'ANHDINH-20260901-TB1-02304W',
+                            expire: '2027-08-31T18:41:00.000Z',
+                            tb: 1,
+                            days: 365,
+                            user: 'Pedinhios'
+                        }
+                    ];
+                    
+                    localStorage.setItem('tipa_keys', JSON.stringify(defaultKeys));
+                    debugInfo.innerHTML = '✅ Đã thêm ' + defaultKeys.length + ' key mặc định!';
+                    console.log('[INIT] Đã thêm key mặc định:', defaultKeys);
+                }
+            } catch (e) {
+                console.log('[ERROR] initDefaultKeys:', e);
+            }
+        }
+
         // ==================== KEY FUNCTIONS ====================
         function getKeysFromAdmin() {
             try {
@@ -889,12 +931,16 @@
 
         function checkLogin() {
             try {
+                // KHỞI TẠO KEY MẶC ĐỊNH TRƯỚC KHI KIỂM TRA
+                initDefaultKeys();
+                
                 var keys = getKeysFromAdmin();
                 if (keys.length === 0) {
                     debugInfo.innerHTML = '⚠️ Chưa có key nào! <span style="color:#d4b83a;">Hãy tạo key trên admin.</span>';
                 } else {
                     debugInfo.innerHTML = '🔍 Nhập key để kích hoạt';
                 }
+                
                 if (localStorage.getItem('aim_logged') === '1') {
                     var savedKey = localStorage.getItem('aim_key');
                     if (savedKey) {
@@ -1156,7 +1202,7 @@
         // ==================== START ====================
         checkLogin();
         startExpireCounter();
-        console.log('[AIMLOCK ULTRA] Ready - Đã bỏ hiển thị key có sẵn');
+        console.log('[AIMLOCK ULTRA] Ready - Đã tự động thêm key mặc định');
         console.log('[AIMLOCK ULTRA] Zalo: 0862937139');
     </script>
 
