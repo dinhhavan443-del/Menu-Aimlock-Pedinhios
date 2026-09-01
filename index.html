@@ -791,8 +791,7 @@
             }
             var found = keys.find(function(item) { return item.key === key; });
             if (!found) {
-                var keyNames = keys.map(function(k) { return k.key; }).join(', ');
-                debugInfo.innerHTML = '📋 Key có sẵn: <span>' + (keyNames || 'Chưa có') + '</span>';
+                debugInfo.innerHTML = '❌ Key <span style="color:#d45a5a;">' + key + '</span> không tồn tại!';
                 return { valid: false, reason: '❌ Key không tồn tại trong hệ thống!' };
             }
             var expireDate = new Date(found.expire);
@@ -892,11 +891,9 @@
             try {
                 var keys = getKeysFromAdmin();
                 if (keys.length === 0) {
-                    debugInfo.innerHTML =
-                    '⚠️ Chưa có key nào! <span style="color:#d4b83a;">Hãy tạo key trên admin.</span>';
+                    debugInfo.innerHTML = '⚠️ Chưa có key nào! <span style="color:#d4b83a;">Hãy tạo key trên admin.</span>';
                 } else {
-                    var keyNames = keys.map(function(k) { return k.key; }).join(', ');
-                    debugInfo.innerHTML = '📋 Key có sẵn: <span>' + (keyNames || 'Chưa có') + '</span>';
+                    debugInfo.innerHTML = '🔍 Nhập key để kích hoạt';
                 }
                 if (localStorage.getItem('aim_logged') === '1') {
                     var savedKey = localStorage.getItem('aim_key');
@@ -1159,7 +1156,7 @@
         // ==================== START ====================
         checkLogin();
         startExpireCounter();
-        console.log('[AIMLOCK ULTRA] Ready - Đã bỏ Code C++ và WebClip');
+        console.log('[AIMLOCK ULTRA] Ready - Đã bỏ hiển thị key có sẵn');
         console.log('[AIMLOCK ULTRA] Zalo: 0862937139');
     </script>
 
